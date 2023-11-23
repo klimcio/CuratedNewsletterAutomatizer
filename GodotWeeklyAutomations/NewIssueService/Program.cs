@@ -10,9 +10,7 @@ internal class Program
     {
         var configuration = GetConfiguration();
 
-        if (configuration is null || 
-            string.IsNullOrWhiteSpace(configuration?.AirtableApiGetTableContentEndpoint) || 
-            string.IsNullOrWhiteSpace(configuration?.AirtableApiAccessToken))
+        if (configuration is null || !configuration.IsValid())
         {
             Console.WriteLine("Configuration not set");
             return;
