@@ -20,7 +20,15 @@ internal class Program
             configuration.AirtableApiAccessToken
         )).Parse();
 
-        var nextIssueRecords = records?.Records.Where(x => AirTableRecordExtensions.Status(x) == "Next issue");
+        var nextIssueRecords = new List<CuratedLink>();
+        
+        records?.Records
+            .Where(x => AirTableRecordExtensions.Status(x) == "Next issue")
+            .ToList()
+            .ForEach(x =>
+            {
+
+            });
 
         Console.WriteLine("Hello, World!");
     }
@@ -49,4 +57,9 @@ internal static class Extensions
         {
             PropertyNameCaseInsensitive = true
         });
+
+    public static string GetYoutubeClipId(this string youtubeUrl)
+    {
+
+    }
 }
