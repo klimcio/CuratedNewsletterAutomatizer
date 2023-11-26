@@ -1,9 +1,18 @@
 ﻿namespace NewIssueService;
 
-internal class CuratedLink
+public class CuratedLink
 {
-    public string Url { get; set; }
-    public string Title { get; set; }
-    public string Category { get; set; }
-    public string Image { get; set; }
+    public string Url { get; set; } = default!;
+    public string Title { get; set; } = default!;
+    public string Category { get; set; } = default!;
+    public string Image { get; set; } = default!;
+
+    internal static CuratedLink Create(AirTableRecord x) 
+        => new()
+        {
+            Title = x.GetTitle(),
+            Category = x.TargetCategory(),
+            Url = x.GetUrl(),
+            Image = x.GetImage()
+        };
 }
