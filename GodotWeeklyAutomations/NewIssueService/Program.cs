@@ -15,18 +15,22 @@ internal class Program
         }
 
         var records = (await configuration.AirtableApiGetTableContentEndpoint.GetContentAsync(
-            configuration.AirtableApiAccessToken
+            configuration.AirtableApiAccessToken, configuration.AirTableFetchFromView
         )).Parse();
 
         var nextIssueRecords = records?.Records
             .Where(x => AirTableRecordExtensions.Status(x) == "Next issue")
             .Where(x => !string.IsNullOrWhiteSpace(x.TargetCategory()))
+            .Take(49)
             .Select(x => CuratedLink.Create(x))
-            .ToList()
-            .ForEach(x =>
-            {
+            .ToList();
 
-            });
+        foreach(var link in nextIssueRecords!)
+        {
+            await configuration.CuratedApiEndpoint
+                .ForPublication(configuration.CuratedPublicationId)
+                .AddLinkToNextIssueAsync(configuration.CuratedApiToken, link);
+        }
 
         Console.WriteLine("Hello, World!");
     }
