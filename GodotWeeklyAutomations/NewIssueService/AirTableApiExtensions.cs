@@ -26,8 +26,13 @@ public static class AirTableApiExtensions
     }
 
     public static AirTableRecords? Parse(this string rawRecords)
-        => JsonSerializer.Deserialize<AirTableRecords>(rawRecords, new JsonSerializerOptions
+    {
+        var newRawRecords = rawRecords.Replace(":true", ":\"true\"");
+
+        return JsonSerializer.Deserialize<AirTableRecords>(newRawRecords, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
+
         });
+    }
 }
