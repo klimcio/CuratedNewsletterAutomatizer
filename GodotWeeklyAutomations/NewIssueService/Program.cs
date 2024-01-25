@@ -18,12 +18,16 @@ internal class Program
             configuration.AirtableApiAccessToken, configuration.AirTableFetchFromView
         )).Parse();
 
+        Console.WriteLine($"Records downloaded: {records?.Records.Count()}");
+
         var nextIssueRecords = records?.Records
             .Where(x => AirTableRecordExtensions.Status(x) == "Next issue")
             .Where(x => !string.IsNullOrWhiteSpace(x.TargetCategory()))
             .Take(49)
             .Select(x => CuratedLink.Create(x))
             .ToList();
+
+        Console.WriteLine($"Records found: {nextIssueRecords.Count()}");
 
         foreach(var link in nextIssueRecords!)
         {
